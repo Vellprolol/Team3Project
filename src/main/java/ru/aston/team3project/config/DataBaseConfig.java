@@ -1,5 +1,6 @@
 package ru.aston.team3project.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application.properties")
 @Configuration
-public class HibernateConfig {
+public class DataBaseConfig {
 
     @Value("${datasource.url}")
     private String datasourceUrl;
@@ -51,6 +52,14 @@ public class HibernateConfig {
         dataSource.setPassword(datasourcePassword);
 
         return dataSource;
+    }
+
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase-changeLog.yaml");
+        liquibase.setDataSource(dataSource());
+        return liquibase;
     }
 
     @Bean
