@@ -1,6 +1,5 @@
 package ru.aston.team3project.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,11 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.aston.team3project.filter.CustomAuthenticationFilter;
+import ru.aston.team3project.filter.CustomAuthorizationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -37,14 +37,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+
         http.authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/login*").permitAll()
-                .antMatchers("/students/**").permitAll()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/students/**").hasAuthority("ROLE_USER")
+                .antMatchers("/logs/**").hasAuthority("ROLE_USER")
+                .antMatchers("/api/role/**").hasAuthority("ROLE_MODERATOR")
+                .antMatchers("/api/users").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/swagger**").hasAuthority("ROLE_MODERATOR")
                 .anyRequest().authenticated();
+
+        http.addFilter(customAuthenticationFilter);
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

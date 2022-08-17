@@ -1,5 +1,7 @@
 package ru.aston.team3project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class User {
     Long id;
     @Column(name = "username")
     private String username;
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
