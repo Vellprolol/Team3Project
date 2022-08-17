@@ -1,0 +1,42 @@
+package ru.aston.team3project.service.impl;
+
+import org.springframework.stereotype.Component;
+import ru.aston.team3project.entity.Log;
+import ru.aston.team3project.repository.LogRepository;
+import ru.aston.team3project.service.LogService;
+
+import java.util.List;
+
+@Component
+public class LogServiceImpl implements LogService {
+    private final LogRepository logRepository;
+
+    public LogServiceImpl(LogRepository logRepository) {
+        this.logRepository = logRepository;
+    }
+
+    @Override
+    public void saveOrUpdateLog(Log log) {
+        logRepository.save(log);
+    }
+
+    @Override
+    public List<Log> getStudentLogs(Long id) {
+        return logRepository.getLogsByStudentStudentId(id).orElseThrow();
+    }
+
+    @Override
+    public Log findLogById(Long id) {
+        return logRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public void deleteLog(Log log) {
+        logRepository.delete(log);
+    }
+
+    @Override
+    public void deleteLogById(Long id) {
+        logRepository.deleteById(id);
+    }
+}

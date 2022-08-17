@@ -11,8 +11,8 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "student_id", nullable = false)
+    private Long studentId;
 
     @Column(name = "name", length = 20)
     private String name;
@@ -32,12 +32,12 @@ public class Student {
         this.logs = logs;
     }
 
-    public Long getId() {
-        return id;
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
     public String getName() {
@@ -59,20 +59,20 @@ public class Student {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Student)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(getId(), student.getId()) && Objects.equals(getName(), student.getName()) && Objects.equals(getLogs(), student.getLogs());
+        return Objects.equals(studentId, student.studentId) && Objects.equals(name, student.name) && Objects.equals(logs, student.logs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLogs());
+        return Objects.hash(studentId, name, logs);
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
+                "studentId=" + studentId +
                 ", name='" + name + '\'' +
                 ", logs=" + logs +
                 '}';
