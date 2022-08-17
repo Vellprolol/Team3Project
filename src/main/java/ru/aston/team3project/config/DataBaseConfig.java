@@ -20,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@EnableJpaRepositories(basePackages = "ru.aston.team3project.repository")
+@EnableJpaRepositories(basePackages = "ru.aston.team3project.repository", entityManagerFactoryRef = "emf", transactionManagerRef = "transManager")
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application.properties")
 @Configuration
@@ -40,17 +40,6 @@ public class DataBaseConfig {
     private String ddlaauto;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(
-                "ru.aston.team3project");
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
-    }
-
-    @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driver);
@@ -59,13 +48,6 @@ public class DataBaseConfig {
         dataSource.setPassword(datasourcePassword);
 
         return dataSource;
-    }
-
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
     }
 
     private final Properties hibernateProperties() {
@@ -77,11 +59,11 @@ public class DataBaseConfig {
         return hibernateProperties;
     }
 
-    @Bean
+    @Bean(name = "emf")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("ru.aston.team3project");
+        em.setPackagesToScan("ru.aston.team3project.entity");
         JpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(jpaAdapter);
         em.setJpaProperties(hibernateProperties());
@@ -89,10 +71,10 @@ public class DataBaseConfig {
         return em;
     }
 
-    @Bean
-    public PlatformTransactionManager jpaTransactionManager(@Qualifier("entityManagerFactory") EntityManagerFactory em) {
+    @Bean(name = "transManager")
+    public PlatformTransactionManager jpaTransactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(em);
+        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return jpaTransactionManager;
     }
