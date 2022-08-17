@@ -27,11 +27,6 @@ public class Student {
         this.name = name;
     }
 
-    public Student(String name, List<Log> logs) {
-        this.name = name;
-        this.logs = logs;
-    }
-
     public Long getStudentId() {
         return studentId;
     }

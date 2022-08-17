@@ -1,8 +1,10 @@
 package ru.aston.team3project.service;
 
 import ru.aston.team3project.entity.Student;
+import ru.aston.team3project.exception_handling.NoSuchDataException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentService {
 
@@ -10,7 +12,7 @@ public interface StudentService {
 
     List<Student> getAllStudents();
 
-    Student findStudentById(Long id);
+    Optional<Student> findStudentById(Long id);
 
     void deleteStudent(Student student);
 

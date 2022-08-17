@@ -1,5 +1,6 @@
 package ru.aston.team3project.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,6 +24,7 @@ public class Log {
     private Student student;
 
     @UpdateTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "updateDateTime")
     private LocalDateTime updateDateTime;
 
@@ -92,7 +94,6 @@ public class Log {
     public String toString() {
         return "Log{" +
                 "logId=" + logId +
-                ", student=" + student +
                 ", updateDateTime=" + updateDateTime +
                 ", message='" + message + '\'' +
                 '}';

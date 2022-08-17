@@ -21,11 +21,4 @@ public class GlobalExceptionHandler {
         incorrectRequest.setInfo(e.getMessage());
         return new ResponseEntity<>(incorrectRequest, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler
-    public ResponseEntity<IncorrectRequest> handleException(AccessRightException e) {
-        IncorrectRequest incorrectRequest = new IncorrectRequest();
-        incorrectRequest.setInfo(e.getMessage());
-        return new ResponseEntity<>(incorrectRequest, HttpStatus.UNAUTHORIZED);
-    }
 }
