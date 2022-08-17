@@ -1,13 +1,14 @@
 package ru.aston.team3project.service.impl;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.aston.team3project.entity.Log;
 import ru.aston.team3project.repository.LogRepository;
 import ru.aston.team3project.service.LogService;
 
 import java.util.List;
 
-@Component
+@Service
 public class LogServiceImpl implements LogService {
     private final LogRepository logRepository;
 

@@ -1,13 +1,14 @@
 package ru.aston.team3project.service.impl;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.aston.team3project.entity.Student;
 import ru.aston.team3project.repository.StudentRepository;
 import ru.aston.team3project.service.StudentService;
 
 import java.util.List;
 
-@Component
+@Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
