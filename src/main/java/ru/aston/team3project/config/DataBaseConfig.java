@@ -1,19 +1,26 @@
 package ru.aston.team3project.config;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@EnableJpaRepositories(basePackages = "ru.aston.team3project.repository", entityManagerFactoryRef = "emf", transactionManagerRef = "transManager")
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application.properties")
 @Configuration
@@ -33,17 +40,6 @@ public class DataBaseConfig {
     private String ddlaauto;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(
-                "ru.aston.team3project");
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
-    }
-
-    @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driver);
@@ -52,13 +48,6 @@ public class DataBaseConfig {
         dataSource.setPassword(datasourcePassword);
 
         return dataSource;
-    }
-
-    @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
     }
 
     private final Properties hibernateProperties() {
@@ -70,4 +59,23 @@ public class DataBaseConfig {
         return hibernateProperties;
     }
 
+    @Bean(name = "emf")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("ru.aston.team3project.entity");
+        JpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(jpaAdapter);
+        em.setJpaProperties(hibernateProperties());
+
+        return em;
+    }
+
+    @Bean(name = "transManager")
+    public PlatformTransactionManager jpaTransactionManager() {
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+
+        return jpaTransactionManager;
+    }
 }

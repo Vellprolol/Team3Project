@@ -1,26 +1,30 @@
 package ru.aston.team3project.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "logs")
 public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "log_id", nullable = false)
     private Long logId;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @UpdateTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "updateDateTime")
     private LocalDateTime updateDateTime;
 
@@ -90,7 +94,6 @@ public class Log {
     public String toString() {
         return "Log{" +
                 "logId=" + logId +
-                ", student=" + student +
                 ", updateDateTime=" + updateDateTime +
                 ", message='" + message + '\'' +
                 '}';
