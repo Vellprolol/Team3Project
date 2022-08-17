@@ -1,5 +1,6 @@
 package ru.aston.team3project.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.aston.team3project.entity.Log;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 public class LogServiceImpl implements LogService {
     private final LogRepository logRepository;
-
+    @Autowired
     public LogServiceImpl(LogRepository logRepository) {
         this.logRepository = logRepository;
     }

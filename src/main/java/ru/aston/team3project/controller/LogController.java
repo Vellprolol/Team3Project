@@ -3,9 +3,11 @@ package ru.aston.team3project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.aston.team3project.entity.Log;
+import ru.aston.team3project.entity.Student;
 import ru.aston.team3project.service.LogService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/logs")

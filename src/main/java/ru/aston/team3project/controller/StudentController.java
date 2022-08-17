@@ -3,6 +3,7 @@ package ru.aston.team3project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.aston.team3project.entity.Student;
+import ru.aston.team3project.exception_handling.NoSuchDataException;
 import ru.aston.team3project.service.StudentService;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student findStudentById(@PathVariable Long id) {
+    public Student findStudentById(@PathVariable Long id) throws NoSuchDataException {
+        Student student = studentService.findStudentById(id);
         return studentService.findStudentById(id);
     }
 
