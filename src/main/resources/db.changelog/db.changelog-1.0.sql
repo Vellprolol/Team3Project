@@ -1,10 +1,12 @@
 --liqquibase formatted sql
 
 
+
 --changeset team3:1
 CREATE TABLE IF NOT EXISTS students
 (
-    student_id   SERIAL PRIMARY KEY
+    student_id   SERIAL PRIMARY KEY,
+    name VARCHAR(20)
 );
 
 --changeset team3:2
