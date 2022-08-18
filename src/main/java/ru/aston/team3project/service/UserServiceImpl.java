@@ -2,13 +2,11 @@ package ru.aston.team3project.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.aston.team3project.entity.Role;
 import ru.aston.team3project.entity.User;
 import ru.aston.team3project.repository.RoleRepository;
@@ -19,8 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@Transactional
+
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -50,14 +47,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void saveUser(User user) {
-        log.info("saving user: {}", user);
-        userRepository.save(user);
+        if (userRepository.findByUsername(user.getUsername()).isEmpty()){
+            userRepository.save(user);
+            addRoleToUser(user.getUsername(), "ROLE_USER");
+            log.info("saved user: {}", user.getUsername());
+        } else
+            log.info("username: {} already exists", user.getUsername());
+
     }
 
     @Override
     public void saveRole(Role role) {
-        log.info("saving role: {}", role);
-        roleRepository.save(role);
+        Optional<Role> roleInDB = roleRepository.findByName(role.getName());
+        if (roleInDB.isEmpty()){
+            roleRepository.save(role);
+            log.info("saved role: {}", role.getName());
+        } else
+            log.info("role: {} already exists", role.getName());
     }
 
     @Override
@@ -66,9 +72,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user.isPresent()){
             Optional<Role> role = roleRepository.findByName(roleName);
             if (role.isPresent()){
-                log.info("adding role({}) to user({})", roleName, username);
-                user.get().getRoles().add(role.get());
-
+                if (user.get().getRoles().stream()
+                        .filter(roleInArr -> roleInArr.getName().equals(role.get().getName()))
+                        .findFirst().isEmpty()){
+                    log.info("adding role({}) to user({})", roleName, username);
+                    user.get().getRoles().add(role.get());
+                    userRepository.save(user.get());
+                } else
+                    log.info("user({}) already has role({})", username, roleName);
             } else
                 log.info("role({}) not found", roleName);
 

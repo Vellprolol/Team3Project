@@ -3,7 +3,8 @@ package ru.aston.team3project.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.aston.team3project.dtos.RoleToUserDTO;
+import ru.aston.team3project.dto.RoleToUserDTO;
+import ru.aston.team3project.dto.UserCreateDTO;
 import ru.aston.team3project.entity.Role;
 import ru.aston.team3project.entity.User;
 import ru.aston.team3project.service.UserServiceImpl;
@@ -12,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class ApiController {
 
     private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
+    public ApiController(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -27,16 +28,17 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/user/save")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveUser(@RequestBody User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void saveUser(@RequestBody UserCreateDTO userCreateDTO){
+        User user = new User(userCreateDTO.getUsername(), passwordEncoder.encode(userCreateDTO.getPassword()));
         userService.saveUser(user);
     }
 
     @PostMapping("/role/save")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveRole(@RequestBody Role role){
+        role.setId(null);
         userService.saveRole(role);
     }
 
