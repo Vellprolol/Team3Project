@@ -2,10 +2,6 @@
 
 
 --changeset team3:1
-CREATE DATABASE logger_team3;
-
-CREATE SCHEMA logger_team3;
-
 CREATE TABLE IF NOT EXISTS students
 (
     student_id   SERIAL PRIMARY KEY
@@ -15,9 +11,7 @@ CREATE TABLE IF NOT EXISTS students
 CREATE TABLE IF NOT EXISTS logs
 (
     log_id   SERIAL UNIQUE PRIMARY KEY,
-    student_id INT REFERENCES students (id) ON DELETE CASCADE,
+    student_id INT REFERENCES students (student_id) ON DELETE CASCADE,
     updateDateTime TIMESTAMP ,
     message VARCHAR(128) NOT NULL
 );
-
---changeset team3:2
