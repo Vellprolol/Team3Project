@@ -38,9 +38,9 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .title("TITLE")
                 .description("DESCRIPTION")
                 .version("VERSION")
-                .termsOfServiceUrl("http://terms-of-services.url/%22)
+                .termsOfServiceUrl("http://terms-of-services.url/%22")
                         .license("LICENSE")
-                        .licenseUrl("http://url-to-license.com/%22)
+                        .licenseUrl("http://url-to-license.com/%22")
                                 .build();
     }
 
