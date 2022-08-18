@@ -1,0 +1,8 @@
+databaseChangelog:
+  - include:
+      file: db.changelog\db.changelog-1.0.sql
+
+#  - include:
+#      file:
+#  - include:
+#      file:
