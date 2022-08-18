@@ -103,6 +103,7 @@
       <version>1.7.36</version>
     </dependency>
 
+
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger2</artifactId>
@@ -168,7 +169,8 @@
           <configuration>
 <!--            <propertyFile>${profile.propertyFile}</propertyFile>-->
             <changeLogFile>D:\work\aston\Team3Project\src\main\resources\db.changelog\db.changelog-1.0.sql</changeLogFile>
-            <url>jdbc:postgresql://localhost:5432/company_repository</url>
+            <changeLogFile>D:\work\aston\Team3Project\src\main\resources\db.changelog\db.changelog-1.1.sql</changeLogFile>
+            <url>jdbc:postgresql://localhost:5432/logger_team3</url>
             <username>postgres</username>
             <password>postgres</password>
 
