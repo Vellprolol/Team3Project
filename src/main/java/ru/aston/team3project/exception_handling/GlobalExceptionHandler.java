@@ -12,6 +12,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<IncorrectRequest> handleException(NoSuchDataException e) {
         IncorrectRequest incorrectData = new IncorrectRequest();
         incorrectData.setInfo(e.getMessage());
+        e.getStackTrace();
         return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
     }
 
@@ -19,6 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<IncorrectRequest> handleException(Exception e) {
         IncorrectRequest incorrectRequest = new IncorrectRequest();
         incorrectRequest.setInfo(e.getMessage());
+        e.getStackTrace();
         return new ResponseEntity<>(incorrectRequest, HttpStatus.BAD_REQUEST);
     }
 }
