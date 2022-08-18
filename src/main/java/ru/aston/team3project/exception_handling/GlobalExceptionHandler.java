@@ -15,17 +15,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<IncorrectRequest> handleException(Exception e) {
-        IncorrectRequest incorrectRequest = new IncorrectRequest();
-        incorrectRequest.setInfo(e.getMessage());
-        return new ResponseEntity<>(incorrectRequest, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<IncorrectRequest> handleException(Exception e) {
+//        IncorrectRequest incorrectRequest = new IncorrectRequest();
+//        incorrectRequest.setInfo(e.getMessage());
+//        return new ResponseEntity<>(incorrectRequest, HttpStatus.BAD_REQUEST);
+//    }
 
-    @ExceptionHandler
-    public ResponseEntity<IncorrectRequest> handleException(AccessRightException e) {
-        IncorrectRequest incorrectRequest = new IncorrectRequest();
-        incorrectRequest.setInfo(e.getMessage());
-        return new ResponseEntity<>(incorrectRequest, HttpStatus.UNAUTHORIZED);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<IncorrectRequest> handleException(AccessRightException e) {
+//        IncorrectRequest incorrectRequest = new IncorrectRequest();
+//        incorrectRequest.setInfo(e.getMessage());
+//        return new ResponseEntity<>(incorrectRequest, HttpStatus.UNAUTHORIZED);
+//    }
 }
