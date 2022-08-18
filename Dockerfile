@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM maven:3.8.1-openjdk-17-slim AS build
+FROM docker pull maven:3.8.6-openjdk-11-slim AS build
 COPY src /app/src
 COPY pom.xml /app
 WORKDIR /app
