@@ -28,11 +28,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login")){
+        if (request.getServletPath().equals("/login")) {
             filterChain.doFilter(request, response);
         } else {
             String access_token = request.getParameter("access_token");
-            if (access_token != null){
+            if (access_token != null) {
                 try {
                     log.info("auth user token:{}", access_token);
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -43,8 +43,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role ->
                             authorities.add(new SimpleGrantedAuthority(role))
-                            );
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,null,authorities);
+                    );
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     log.info("roles:{}", roles);
                     filterChain.doFilter(request, response);

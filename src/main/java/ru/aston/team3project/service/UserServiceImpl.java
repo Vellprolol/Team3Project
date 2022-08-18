@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.get().getRoles().forEach(role ->
                     authorities.add(new SimpleGrantedAuthority(role.getName()))
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void saveUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isEmpty()){
+        if (userRepository.findByUsername(user.getUsername()).isEmpty()) {
             userRepository.save(user);
             addRoleToUser(user.getUsername(), "ROLE_USER");
             log.info("saved user: {}", user.getUsername());
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void saveRole(Role role) {
         Optional<Role> roleInDB = roleRepository.findByName(role.getName());
-        if (roleInDB.isEmpty()){
+        if (roleInDB.isEmpty()) {
             roleRepository.save(role);
             log.info("saved role: {}", role.getName());
         } else
@@ -69,12 +69,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void addRoleToUser(String username, String roleName) {
         Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             Optional<Role> role = roleRepository.findByName(roleName);
-            if (role.isPresent()){
+            if (role.isPresent()) {
                 if (user.get().getRoles().stream()
                         .filter(roleInArr -> roleInArr.getName().equals(role.get().getName()))
-                        .findFirst().isEmpty()){
+                        .findFirst().isEmpty()) {
                     log.info("adding role({}) to user({})", roleName, username);
                     user.get().getRoles().add(role.get());
                     userRepository.save(user.get());
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 

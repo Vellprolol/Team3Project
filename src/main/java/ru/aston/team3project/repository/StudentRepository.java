@@ -13,6 +13,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Override
     @NonNull
     List<Student> findAll();
-//
-//    Optional<Student> findStudentById(Long id);
 }

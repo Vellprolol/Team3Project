@@ -1,7 +1,6 @@
 package ru.aston.team3project.service;
 
 import ru.aston.team3project.entity.Student;
-import ru.aston.team3project.exception_handling.NoSuchDataException;
 
 import java.util.List;
 import java.util.Optional;
