@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS logs
 (
     log_id   SERIAL UNIQUE PRIMARY KEY,
     student_id INT REFERENCES students (id) ON DELETE CASCADE,
-    updateDateTime TIMESTAMP ,  --     UNIQUE NOT NULL,
+    updateDateTime TIMESTAMP ,
     message VARCHAR(128) NOT NULL
 );
 
