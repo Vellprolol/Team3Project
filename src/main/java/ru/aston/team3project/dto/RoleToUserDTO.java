@@ -1,4 +1,4 @@
-package ru.aston.team3project.dtos;
+package ru.aston.team3project.dto;
 
 public class RoleToUserDTO {
     private String username;
