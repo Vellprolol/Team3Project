@@ -169,16 +169,11 @@
           <configuration>
 <!--            <propertyFile>${profile.propertyFile}</propertyFile>-->
             <changeLogFile>D:\work\aston\Team3Project\src\main\resources\db.changelog\db.changelog-1.0.sql</changeLogFile>
-<!--            <changeLogFile>D:\work\aston\Team3Project\src\main\resources\db.changelog\db.changelog-1.1.sql</changeLogFile>-->
+            <changeLogFile>D:\work\aston\Team3Project\src\main\resources\db.changelog\db.changelog-2.0.sql</changeLogFile>
             <url>jdbc:postgresql://localhost:5432/logger_team3</url>
             <username>postgres</username>
             <password>postgres</password>
 
-<!--            <dataDir>${profile.dataDir}</dataDir>-->
-<!--            &lt;!&ndash; log  &ndash;&gt;-->
-<!--            <verbose>${profile.verbose}</verbose>-->
-<!--            <logging>${profile.logging}</logging>-->
-<!--            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
           </configuration>
           <executions>
             <execution>
