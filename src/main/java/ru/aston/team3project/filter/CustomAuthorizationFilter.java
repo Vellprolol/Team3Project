@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Arrays.stream;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
@@ -28,17 +29,18 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login")) {
+        if (request.getServletPath().equals("/api/login")) {
             filterChain.doFilter(request, response);
         } else {
-            String access_token = request.getParameter("access_token");
-            if (access_token != null) {
+            String authorizationHeader = request.getHeader(AUTHORIZATION);
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    log.info("auth user token:{}", access_token);
+                    String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = verifier.verify(access_token);
+                    DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
+                    log.info("authorizing user: {}", username);
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role ->
@@ -46,7 +48,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     );
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    log.info("roles:{}", roles);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
                     log.error("Error loggin in: {}", e.getMessage());
