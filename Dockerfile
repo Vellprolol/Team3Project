@@ -10,8 +10,7 @@ RUN mvn clean install
 #
 # Package stage
 #
-FROM tomcat:8.5.82-jre8-openjdk-slim-buster
+FROM tomcat
 ENV TZ=Europe/Moscow
-RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /app/target/Team3Project.war /usr/local/tomcat/webapps
 CMD ["catalina.sh", "run"]
